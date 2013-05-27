@@ -1,0 +1,29 @@
+++++3 tier application configured from scratch++++
+1. Rest resources 
+2. service layer
+3. Dao layer
+4. Mysql as data base
+
+Technologies used:
+-Tomcat deploys the web file descriptor (web.xml) for deploying the web app.
+
+-Spring is used as DI framework && AOP
+
+-Jboss Resteasy utilized for implementing JAX-RS WS.
+
+-Integrating Resteasy + Spring so the applicationContext is loaded over the deployment process
+each resource(end point) annotated with @Path is a Spring managed bean so autowired works
+for resources as well. Important we don't have Resteasy create an instance for each resource
+Resteasy requests instances that had been created by Spring IoC.
+
+-Spring is used to take the singleton instance from DataSource. We currently use common DCP as connection
+pool implementation (3rd party implementation)
+
+-Dao implementation currently evaluated: 
+1. plain JDBC for accessing Person Model object
+2. JdbcTemplate for the same reason
+
+--DataSource implementation used to be acquired by dbcp 3rd party connection pool implementation
+  on 27/05/13 we changed it so the DataSource is implemented by Tomcat's connection pool implementation
+  application using the DataSource via Spring. Spring implements look up mechanism and creates an Spring
+  managed bean from JNDI service. Look at the applicationContext.xml configuration file.
