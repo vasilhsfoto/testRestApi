@@ -1,29 +1,25 @@
 ++++3 tier application configured from scratch++++
 1. Rest resources 
-2. service layer
+2. Service layer
 3. Dao layer
 4. Mysql as data base
 
 Technologies used:
--Tomcat deploys the web file descriptor (web.xml) for deploying the web app.
+-Tomcat servlet container is being used for deploying the application (WAR)
 
--Spring is used as DI framework && AOP
+-Spring is used for Dependency Injection and AOP
 
 -Jboss Resteasy utilized for implementing JAX-RS WS.
 
--Integrating Resteasy + Spring so the applicationContext is loaded over the deployment process
-each resource(end point) annotated with @Path is a Spring managed bean so autowired works
-for resources as well. Important we don't have Resteasy create an instance for each resource
-Resteasy requests instances that had been created by Spring IoC.
-
--Spring is used to take the singleton instance from DataSource. We currently use common DCP as connection
-pool implementation (3rd party implementation)
+-Integrating Resteasy + Spring. Resteasy doesn't create an instance for each resource,
+Rather Resteasy requests instances that had been created by Spring IoC. This way endpoints 
+are spring managed beans and we can freely use them to inject other spring managed services.
 
 -Dao implementation currently evaluated: 
 1. plain JDBC for accessing Person Model object
 2. JdbcTemplate for the same reason
 
---DataSource implementation used to be acquired by dbcp 3rd party connection pool implementation
-  on 27/05/13 we changed it so the DataSource is implemented by Tomcat's connection pool implementation
-  application using the DataSource via Spring. Spring implements look up mechanism and creates an Spring
-  managed bean from JNDI service. Look at the applicationContext.xml configuration file.
+-DataSource implementation used to be provided by dbcp 3rd party library. Now DataSource implementation
+is provided by the container (Tomcat). Tomcat registers the DataSource using JNDI interface in 
+an LDAP directory. We use Spring xml (<jee:jndi-lookup) for accessing the DataSource and getting a bean from it. The
+configuration is inside ApplicationContext.xml file.
