@@ -15,9 +15,9 @@ Technologies used:
 Rather Resteasy requests instances that had been created by Spring IoC. This way endpoints 
 are spring managed beans and we can freely use them to inject other spring managed services.
 
--Dao implementation currently evaluated: 
+-Dao implementation currently is based on: 
 1. plain JDBC for accessing Person Model object
-2. JdbcTemplate for the same reason
+2. JdbcTemplate
 
 -DataSource implementation used to be provided by dbcp 3rd party library. Now DataSource implementation
 is provided by the container (Tomcat). Tomcat registers the DataSource using JNDI interface in 
